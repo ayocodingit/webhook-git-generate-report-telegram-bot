@@ -15,8 +15,8 @@ jobs:
     steps:
     - name: evidence
       uses: enflo/curl-action@master
-        with:
-          curl: ${{ secrets.EVIDENCE_URL }}?owner=${{ secrets.EVIDENCE_OWNER }}&repo=${{ secrets.EVIDENCE_REPO }}&secret_key=${{ secrets.EVIDENCE_SECRET_KEY }}&pull_number=${{ env.NUMBER }} 
+      with:
+        curl: ${{ secrets.EVIDENCE_URL }}?owner=${{ secrets.EVIDENCE_OWNER }}&repo=${{ secrets.EVIDENCE_REPO }}&secret_key=${{ secrets.EVIDENCE_SECRET_KEY }}&pull_number=${{ env.NUMBER }} 
       env: 
         NUMBER: ${{ github.event.number }}
   

@@ -22,5 +22,6 @@ jobs:
         url: ${{ secrets.EVIDENCE_URL }}
         # Params can be passed through json object string 
         params: '{ "owner": "${{ secrets.EVIDENCE_OWNER }}", "repo": "${{ secrets.EVIDENCE_REPO }}", "secret_key": "${{ secrets.EVIDENCE_SECRET_KEY }}", "pull_number": "${{ env.PULL_NUMBER }}"  }'
+        is_debug: true
 
 

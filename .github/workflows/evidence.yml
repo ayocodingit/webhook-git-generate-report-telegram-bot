@@ -12,9 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: define pull number
-      run: "echo $(jq --raw-output .pull_request.number '$GITHUB_EVENT_PATH')"
+      run: ${{ github.event.number  }}
       env:
-        PULL_NUMBER: $(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
+        PULL_NUMBER: ${{ github.event.number  }}
     - name: evidence
       uses: indiesdev/curl@v1
       with:

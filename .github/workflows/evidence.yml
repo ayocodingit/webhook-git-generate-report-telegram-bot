@@ -6,15 +6,13 @@ name: Evidence CD
 on:
   push:
     branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
   evidence:
     runs-on: ubuntu-latest
     steps:
-    - name: define pull number
-      run: ${{ github.event.number  }}
-      env:
-        PULL_NUMBER: ${{ github.event.number  }}
     - name: evidence
       uses: indiesdev/curl@v1
       with:

@@ -32,9 +32,8 @@ const checkSecretKey = async (secret) => {
 }
 
 const configPicture = {
-  type: 'jpeg',
-  fullPage: true,
-  quality: 0.1
+  type: 'png',
+  fullPage: true
 }
 
 app.get('/', async (req, res) => {
@@ -48,7 +47,7 @@ app.get('/', async (req, res) => {
     const response = await octokit.request(`GET ${path}`, config);
     const { html_url, title, user } = response.data
 
-    const picture = await captureWebsite.base64(html_url, title.toLowerCase().replace(' ', '_') + '.jpeg', configPicture);
+    const picture = await captureWebsite.base64(html_url, title.toLowerCase().replace(' ', '_') + '.png', configPicture);
 
     const participant = await getParticipant(user, config)
 

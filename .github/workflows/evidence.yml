@@ -12,6 +12,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: evidence
-      uses: wei/curl@v1
+      uses: indiesdev/curl@v1
       with:
-        args: -X GET {secrets.URL}?owner={secrets.OWNER}&repo={secrets.REPO}&pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")&secret_key={secrets.SECRET_KEY}
+        # The target URL
+        url: ${{ secrets.EVIDENCE_URL }}
+
+        # Params can be passed through json object string 
+        params: '{ "owner": "${{ secrets.EVIDENCE_OWNER }}", "repo": "${{ secrets.EVIDENCE_REPO }}", "secret_key": "${{ secrets.EVIDENCE_SECRET_KEY }}", "pull_number": $(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH") }'
+
+

@@ -14,9 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: evidence
-      uses: wei/curl@master
-      with:
-        args: ${{ secrets.EVIDENCE_URL }}?owner=${{ secrets.EVIDENCE_OWNER }}&repo=${{ secrets.EVIDENCE_REPO }}&secret_key=${{ secrets.EVIDENCE_SECRET_KEY }}&pull_number=${{ env.NUMBER }}
+      uses: enflo/curl-action@master
+        with:
+          curl: ${{ secrets.EVIDENCE_URL }}?owner=${{ secrets.EVIDENCE_OWNER }}&repo=${{ secrets.EVIDENCE_REPO }}&secret_key=${{ secrets.EVIDENCE_SECRET_KEY }}&pull_number=${{ env.NUMBER }} 
       env: 
         NUMBER: ${{ github.event.number }}
   

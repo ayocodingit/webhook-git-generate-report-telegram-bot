@@ -14,9 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: define pull number
-      run: echo "PULL_NUMBER ${{ github.event.number  }}"
+      run: echo "${{ github.event.number }}"
       env:
-        PULL_NUMBER: ${{ github.event.number  }}
+        PULL_NUMBER: "${{ github.event.number }}"
     - name: evidence
       uses: indiesdev/curl@v1
       with:

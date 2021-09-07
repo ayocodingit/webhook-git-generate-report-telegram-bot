@@ -13,16 +13,12 @@ jobs:
   evidence:
     runs-on: ubuntu-latest
     steps:
-    - name: define pull number
-      run: echo "${{ github.event.number }}"
-      env:
-        NUMBER: ${{ github.event.number }}
     - name: evidence
       uses: indiesdev/curl@v1
       with:
-        # The target URL
         url: "${{ secrets.EVIDENCE_URL }}"
-        # Params can be passed through json object string 
         params: '{ "owner": "${{ secrets.EVIDENCE_OWNER }}", "repo": "${{ secrets.EVIDENCE_REPO }}", "secret_key": "${{ secrets.EVIDENCE_SECRET_KEY }}", "pull_number": "${{ env.NUMBER }}"  }'
+      env: 
+        NUMBER: ${{ github.event.number }}
 
 

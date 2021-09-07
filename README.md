@@ -10,3 +10,5 @@ git clone https://github.com/ayocodingit/github-action.git
 cd github-action
 cp .env.example .env
 ```
+
+testing

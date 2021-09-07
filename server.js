@@ -1,6 +1,9 @@
 import { Octokit } from "@octokit/core";
 import captureWebsite from 'capture-website';
+import dotEnv from 'dotenv'
+dotEnv.config()
 
+const PORT = process.env.PORT
 const octokit = new Octokit({ auth: process.env.ACCESS_TOKENS });
 
 import express from 'express'
@@ -52,4 +55,6 @@ app.get('/', async function (req, res) {
     }
 })
  
-app.listen(3000)
+app.listen(PORT, () => {
+    console.log(`App listening at http://0.0.0.0:${PORT}`)
+})

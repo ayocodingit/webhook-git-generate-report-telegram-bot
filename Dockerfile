@@ -1,4 +1,4 @@
-FROM registry.digitalservice.id/proxyjds/library/node:14-slim
+FROM registry.digitalservice.id/proxyjds/library/node:14
 
 WORKDIR /app
 

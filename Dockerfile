@@ -2,6 +2,8 @@ FROM registry.digitalservice.id/proxyjds/library/node:14
 
 WORKDIR /app
 
+RUN apt-get update
+
 RUN apt-get install ia32-libs-gtk
 
 COPY . .

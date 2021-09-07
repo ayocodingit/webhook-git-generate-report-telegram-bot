@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: define pull number
+      run: "echo $(jq --raw-output .pull_request.number '$GITHUB_EVENT_PATH')"
       env:
         PULL_NUMBER: $(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
     - name: evidence

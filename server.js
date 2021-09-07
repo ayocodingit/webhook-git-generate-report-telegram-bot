@@ -53,6 +53,8 @@ app.get('/', async (req, res) => {
 
     const payload = { picture: picture, participant: participant, title: title, project: title.split(' | ')[0] }
 
+    console.log(payload);
+    
     return res.json(payload)
   } catch (error) {
     return res.status(403).json({ error: error.message })

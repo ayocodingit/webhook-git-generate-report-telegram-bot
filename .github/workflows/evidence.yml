@@ -1,0 +1,26 @@
+# This workflow will do a clean install of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Evidence CD
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  evidence:
+    runs-on: ubuntu-latest
+    steps:
+    - name: define pull number
+      run: ${{ github.event.number  }}
+      env:
+        PULL_NUMBER: ${{ github.event.number  }}
+    - name: evidence
+      uses: indiesdev/curl@v1
+      with:
+        # The target URL
+        url: ${{ secrets.EVIDENCE_URL }}
+        # Params can be passed through json object string 
+        params: '{ "owner": "${{ secrets.EVIDENCE_OWNER }}", "repo": "${{ secrets.EVIDENCE_REPO }}", "secret_key": "${{ secrets.EVIDENCE_SECRET_KEY }}", "pull_number": "${{ env.PULL_NUMBER }}"  }'
+
+

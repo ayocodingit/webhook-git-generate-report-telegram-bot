@@ -27,6 +27,10 @@ const getParticipant = async (user, config) => {
   return participant
 }
 
+const checkSecretKey = async (secret) => {
+  if (secret !== process.env.SECRET_KEY) throw Error('Credential is invalid' )
+}
+
 const configPicture = {
   type: 'jpeg',
   fullPage: true,
@@ -36,13 +40,15 @@ const configPicture = {
 app.get('/', async (req, res) => {
   try {
     const { owner, repo, pull_number } = req.query
+
+    await checkSecretKey(req.query.secret_key)
     
     const config = { owner: owner, repo: repo, pull_number: Number(pull_number) }
 
     const response = await octokit.request(`GET ${path}`, config);
     const { html_url, title, user } = response.data
 
-    const picture = await captureWebsite.base64(html_url, title.strtoLower().replace(' ', '_') + '.jpeg', configPicture);
+    const picture = await captureWebsite.base64(html_url, title.toLowerCase().replace(' ', '_') + '.jpeg', configPicture);
 
     const participant = await getParticipant(user, config)
 
@@ -50,8 +56,7 @@ app.get('/', async (req, res) => {
 
     return res.json(payload)
   } catch (error) {
-    console.log(error.message);
-    throw error
+    return res.status(403).json({ error: error.message })
   }
 })
  

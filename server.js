@@ -26,13 +26,13 @@ app.post('/webhook', async (req, res) => {
   try {
     const { html_url, title, user, number, head } = req.body.pull_request;
     const ownerRepo = head.repo.full_name.split('/')
-    await verifySecretKey(req.body.read)
+    await verifySecretKey(req.query.secret)
     const picture = await capture({url: html_url});
     const config = { owner: ownerRepo[0], repo: ownerRepo[1],  number: (number) }
     const participant = await getParticipant(user, config, path, octokit)
     const payload = { picture: picture, participant: participant, title: title, project: title.split(' | ')[0] }
     console.info(payload);
-    return res.json(payload);
+    return res.send('success');
   } catch (error) {
     console.log(error);
     return res.status(403).json({ error: error.message })

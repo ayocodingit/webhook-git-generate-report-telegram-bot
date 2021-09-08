@@ -5,8 +5,7 @@ WORKDIR /app
 COPY . .
 
 # Installs latest Chromium (89) package.
-RUN apk add \
-      chromium \
+RUN apk add chromium \
       nss \
       freetype \
       harfbuzz \

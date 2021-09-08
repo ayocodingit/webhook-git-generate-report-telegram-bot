@@ -1,4 +1,4 @@
-FROM registry.digitalservice.id/proxyjds/library/node:12-slim as base
+FROM registry.digitalservice.id/proxyjds/library/node:12-slim
 
 RUN apt-get update -y -q
 RUN apt-get install -y -q wget xvfb libgtk2.0-0 libxtst6 libxss1 libgconf-2-4 libnss3 libasound2 libatk-bridge2.0-0 libxkbcommon-x11-0 

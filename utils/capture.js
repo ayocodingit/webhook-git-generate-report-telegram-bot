@@ -1,12 +1,33 @@
 
 import puppeteer from 'puppeteer'
+import dotEnv from 'dotenv'
+dotEnv.config()
+
+const login = process.env.LOGIN
+console.log(login);
+const account = process.env.ACCOUNT
+const password = process.env.PASSWORD
+const urlLogin = process.env.URL_LOGIN
+const tagUsername = process.env.TAG_USERNAME
+const tagPassword = process.env.TAG_PASSWORD
+const tagSubmit = process.env.TAG_SUBMIT
 
 export default async (url) => {
   const filePath = `tmp/${Date.now()}${Math.random()}.png`
-  const browser = await puppeteer.launch({ args: ['--no-sandbox'] })
+  const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] })
   const page = await browser.newPage()
+  await page.setViewport({ width: 1024, height: 768, isLandscape: true})
+  if (login === 'true') {
+    await page.goto(urlLogin, { waitUntil: 'networkidle2' })
+    await page.type(tagUsername, account);
+    await page.type(tagPassword, password);
+    await Promise.all([
+      page.click(tagSubmit),
+      page.waitForNavigation({ waitUntil: 'networkidle2' }),
+    ]);
+  }
   await page.goto(url, { waitUntil: 'networkidle2' })
-  await page.screenshot({ path: filePath, fullPage: true })
+  await page.screenshot({ path: filePath })
   await browser.close()
   return filePath
 }

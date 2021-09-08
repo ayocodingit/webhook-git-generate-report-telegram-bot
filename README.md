@@ -9,5 +9,4 @@ Clone project and install dependencies:
 git clone https://github.com/ayocodingit/github-action.git
 cd github-action
 cp .env.example .env
-
 ```

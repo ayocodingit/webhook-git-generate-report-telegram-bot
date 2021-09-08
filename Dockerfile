@@ -1,24 +1,36 @@
-FROM registry.digitalservice.id/proxyjds/library/node:12-slim
-
-RUN apt-get update -y -q
-RUN apt-get install -y -q wget xvfb libgtk2.0-0 libxtst6 libxss1 libgconf-2-4 libnss3 libasound2 libatk-bridge2.0-0 libxkbcommon-x11-0 
-RUN apt-get install -y libgbm-dev libgtk-3-dev
-
-RUN apt-get clean autoclean \
-    && apt-get autoremove --yes \
-    && rm -rf /var/lib/apt/lists/*
+FROM registry.digitalservice.id/proxyjds/library/alpine:edge
 
 WORKDIR /app
 
 COPY . .
 
-RUN npm install
+# Installs latest Chromium (89) package.
+RUN apk add --no-cache \
+      chromium \
+      nss \
+      freetype \
+      harfbuzz \
+      ca-certificates \
+      ttf-freefont \
+      nodejs \
+      yarn
 
-RUN groupadd -r pptruser && useradd -r -g pptruser -G audio,video pptruser \
-    && chown -R pptruser:pptruser node_modules
+# Tell Puppeteer to skip installing Chrome. We'll be using the installed package.
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
+    PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+
+# Puppeteer v6.0.0 works with Chromium 89.
+RUN yarn install
+
+# Add user so we don't need --no-sandbox.
+RUN addgroup -S pptruser && adduser -S -g pptruser pptruser \
+    && mkdir -p /home/pptruser/Downloads /app \
+    && chown -R pptruser:pptruser /home/pptruser \
+    && chown -R pptruser:pptruser /app
+
+# Run everything after as non-privileged user.
+USER pptruser
 
 EXPOSE 3003
 
-USER pptruser
-
-CMD [ "npm", "run", "start" ]
+CMD [ "yarn", "run", "start" ]

@@ -1,8 +1,4 @@
-FROM registry.digitalservice.id/proxyjds/library/alpine:edge
-
-WORKDIR /app
-
-COPY . .
+FROM registry.digitalservice.id/proxyjds/library/alpine:edge as base
 
 # Installs latest Chromium (89) package.
 RUN apk add chromium \
@@ -13,6 +9,12 @@ RUN apk add chromium \
       ttf-freefont \
       nodejs \
       yarn
+
+FROM base
+
+WORKDIR /app
+
+COPY . .
 
 # Tell Puppeteer to skip installing Chrome. We'll be using the installed package.
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \

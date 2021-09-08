@@ -57,6 +57,7 @@ app.post('/webhook', async (req, res) => {
 
     return res.json(payload);
   } catch (error) {
+    console.log(error);
     return res.status(403).json({ error: error.message })
   }
 })

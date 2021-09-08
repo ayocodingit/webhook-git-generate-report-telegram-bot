@@ -20,8 +20,8 @@ app.post('/webhook/:secret', async (req, res) => {
     const { html_url, title, user, number, head, merged } = req.body.pull_request;
     const ownerRepo = head.repo.full_name.split('/')
     await verifySecretKey(req.params.secret)
-    if (!merged) return res.send('waiting merge ...')
-    const picture = await capture({url: html_url});
+    // if (!merged) return res.send('waiting merge ...')
+    const picture = await capture(html_url);
     const config = { owner: ownerRepo[0], repo: ownerRepo[1],  number: number }
     const participants = await getParticipant(user, config)
     await reportTelegram({

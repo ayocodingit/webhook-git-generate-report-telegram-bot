@@ -4,7 +4,6 @@ import dotEnv from 'dotenv'
 dotEnv.config()
 
 const login = process.env.LOGIN
-console.log(login);
 const account = process.env.ACCOUNT
 const password = process.env.PASSWORD
 const urlLogin = process.env.URL_LOGIN

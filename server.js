@@ -37,6 +37,7 @@ app.get('/', (req, res) => {
 
 app.post('/webhook', async (req, res) => {
   try {
+    console.log(req);
     console.info('Webhook Payload', JSON.stringify(req.body));
 
     const { html_url, title, user, number } = req.body.pull_request;

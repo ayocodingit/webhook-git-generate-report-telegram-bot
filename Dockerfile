@@ -5,7 +5,7 @@ WORKDIR /app
 COPY . .
 
 # Installs latest Chromium (89) package.
-RUN apk add --no-cache \
+RUN apk add \
       chromium \
       nss \
       freetype \

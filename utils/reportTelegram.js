@@ -9,7 +9,7 @@ const apiTelegram = `https://api.telegram.org/${TELEGRAM_KEY}`
 
 const caption = (payload) => {
   return `
-/lapor ${payload.project} | ${payload.title}
+/lapor ${payload.title}
 peserta: ${payload.participant.join(', ')}
 lampiran: ${payload.html_url}
 `

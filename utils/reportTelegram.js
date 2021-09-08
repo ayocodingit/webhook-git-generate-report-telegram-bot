@@ -7,10 +7,10 @@ const TELEGRAM_KEY = process.env.TELEGRAM_KEY
 const CHART_ID = process.env.CHART_ID
 const apiTelegram = `https://api.telegram.org/${TELEGRAM_KEY}`
 
-const caption = (payload) => {
+const message = (payload) => {
   return `
 /lapor ${payload.title.replace(/['"]+/g, '')}
-Peserta: ${payload.participant.join(', ')}
+Peserta: ${payload.participants.join(', ')}
 Lampiran: ${payload.html_url}
 `
 }
@@ -18,7 +18,7 @@ Lampiran: ${payload.html_url}
 const replyChat = (reply_to_message_id, payload) => {
   const formData = {
     chat_id: CHART_ID,
-    text: caption(payload),
+    text: message(payload),
     reply_to_message_id: reply_to_message_id
   };
 

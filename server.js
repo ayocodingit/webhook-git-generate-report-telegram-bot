@@ -1,8 +1,8 @@
 'use strict'
 
 import { Octokit } from "@octokit/core";
-import captureWebsite from 'capture-website';
 import dotEnv from 'dotenv'
+import capture from './capture.js'
 dotEnv.config()
 
 const PORT = process.env.PORT
@@ -31,11 +31,6 @@ const checkSecretKey = async (secret) => {
   if (secret !== process.env.SECRET_KEY) throw Error('Credential is invalid' )
 }
 
-const configPicture = {
-  type: 'png',
-  fullPage: true
-}
-
 app.get('/', async (req, res) => {
   try {
     const { owner, repo, pull_number } = req.query
@@ -47,7 +42,7 @@ app.get('/', async (req, res) => {
     const response = await octokit.request(`GET ${path}`, config);
     const { html_url, title, user } = response.data
 
-    const picture = await captureWebsite.base64(html_url, title.toLowerCase().replace(' ', '_') + '.png', configPicture);
+    const picture = await capture({url: html_url});
 
     const participant = await getParticipant(user, config)
 

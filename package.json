@@ -5,9 +5,12 @@
   "main": "server.js",
   "dependencies": {
     "@octokit/core": "^3.5.1",
-    "capture-website": "^2.0.2",
     "dotenv": "^10.0.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "puppeteer": "^10.2.0",
+    "temp-dir": "^2.0.0",
+    "timers": "^0.1.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.12"

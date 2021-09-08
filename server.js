@@ -12,7 +12,7 @@ const octokit = new Octokit({ auth: ACCESS_TOKENS });
 import express from 'express'
 const app = express()
 
-const path = '/repos/{owner}/{repo}/pulls/{pull_number}'
+const path = '/repos/{ownerRepo}/pulls/{number}'
 
 const getParticipant = async (user, config) => {
   const participant = []
@@ -27,30 +27,34 @@ const getParticipant = async (user, config) => {
   return participant
 }
 
-const checkSecretKey = async (secret) => {
+const verifySecretKey = async (secret) => {
   if (secret !== process.env.SECRET_KEY) throw Error('Credential is invalid' )
 }
 
-app.get('/', async (req, res) => {
+app.get('/', (req, res) => {
+  res.sendStatus(404);
+});
+
+app.post('/webhook', async (req, res) => {
   try {
-    const { owner, repo, pull_number } = req.query
+    console.info('Webhook Payload', JSON.stringify(req.body));
 
-    await checkSecretKey(req.query.secret_key)
-    
-    const config = { owner: owner, repo: repo, pull_number: Number(pull_number) }
+    const { html_url, title, user, number } = req.body.pull_request;
+    const ownerRepo = req.body.head.repo.fullname
 
-    const response = await octokit.request(`GET ${path}`, config);
-    const { html_url, title, user } = response.data
+    await verifySecretKey(req.body.read)
 
     const picture = await capture({url: html_url});
+  
+    const config = { ownerRepo: ownerRepo, number: (number) }
 
     const participant = await getParticipant(user, config)
 
     const payload = { picture: picture, participant: participant, title: title, project: title.split(' | ')[0] }
 
-    console.log(payload);
-    
-    return res.json(payload)
+    console.info(payload);
+
+    return res.json(payload);
   } catch (error) {
     return res.status(403).json({ error: error.message })
   }

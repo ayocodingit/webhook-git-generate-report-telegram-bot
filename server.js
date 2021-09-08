@@ -4,15 +4,18 @@ import { Octokit } from "@octokit/core";
 import dotEnv from 'dotenv'
 import capture from './capture.js'
 dotEnv.config()
+import bodyParser from 'body-parser'
+
+import express from 'express'
+const app = express()
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.json())
 
 const PORT = process.env.PORT
 const ACCESS_TOKENS = process.env.ACCESS_TOKENS
 const octokit = new Octokit({ auth: ACCESS_TOKENS });
 
-import express from 'express'
-const app = express()
-
-const path = '/repos/{ownerRepo}/pulls/{number}'
+const path = '/repos/{owner}/{repo}/pulls/{number}'
 
 const getParticipant = async (user, config) => {
   const participant = []
@@ -37,17 +40,14 @@ app.get('/', (req, res) => {
 
 app.post('/webhook', async (req, res) => {
   try {
-    console.log(req);
-    console.info('Webhook Payload', JSON.stringify(req.body));
-
-    const { html_url, title, user, number } = req.body.pull_request;
-    const ownerRepo = req.body.head.repo.fullname
+    const { html_url, title, user, number, head } = req.body.pull_request;
+    const ownerRepo = head.repo.full_name.split('/')
 
     await verifySecretKey(req.body.read)
 
     const picture = await capture({url: html_url});
   
-    const config = { ownerRepo: ownerRepo, number: (number) }
+    const config = { owner: ownerRepo[0], repo: ownerRepo[1],  number: (number) }
 
     const participant = await getParticipant(user, config)
 
@@ -57,7 +57,7 @@ app.post('/webhook', async (req, res) => {
 
     return res.json(payload);
   } catch (error) {
-    return res.status(403).json({ error: error.message })
+    return res.status(403).json({ error: error })
   }
 })
  

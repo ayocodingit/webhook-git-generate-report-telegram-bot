@@ -9,10 +9,26 @@ const apiTelegram = `https://api.telegram.org/${TELEGRAM_KEY}`
 
 const caption = (payload) => {
   return `
-/lapor ${payload.title}
-peserta: ${payload.participant.join(', ')}
-lampiran: ${payload.html_url}
+/lapor ${payload.title.replace(/['"]+/g, '')}
+Peserta: ${payload.participant.join(', ')}
+Lampiran: ${payload.html_url}
 `
+}
+
+const replyChat = (reply_to_message_id, payload) => {
+  const formData = {
+    chat_id: CHART_ID,
+    text: caption(payload),
+    reply_to_message_id: reply_to_message_id
+  };
+
+  request.get({url: apiTelegram + '/sendMessage', qs: formData},
+    function cb(err) {
+      if (err) {
+        return console.error('upload failed:', err);
+      }
+    }
+  );
 }
 
 export default async (payload) => {
@@ -25,15 +41,17 @@ export default async (payload) => {
               filename: payload.picture,
               contentType: 'image/png'
             }
-          },
-          caption: caption(payload)
+          }
         };
         request.post({url: apiTelegram + '/sendPhoto', formData: formData},
-          function cb(err) {
+          function cb(err, response) {
             fs.unlinkSync(payload.picture)
             if (err) {
               return console.error('upload failed:', err);
             }
+            const body = JSON.parse(response.body)
+            const { message_id } = body.result
+            replyChat(message_id, payload)
           }
         );
       } catch (error) {

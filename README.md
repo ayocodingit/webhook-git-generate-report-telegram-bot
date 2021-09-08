@@ -30,8 +30,6 @@ Create workflows github **evidence.yml**
 name: Evidence CD
 
 on:
-  push:
-    branches: [ master ]
   pull_request:
     branches: [ master ]
 

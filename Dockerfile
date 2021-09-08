@@ -1,12 +1,7 @@
-FROM registry.digitalservice.id/proxyjds/library/alpine:edge
-
-WORKDIR /app
-
-COPY . .
+FROM registry.digitalservice.id/proxyjds/library/alpine:edge as base
 
 # Installs latest Chromium (89) package.
-RUN apk add --no-cache \
-      chromium \
+RUN apk add chromium \
       nss \
       freetype \
       harfbuzz \
@@ -14,6 +9,12 @@ RUN apk add --no-cache \
       ttf-freefont \
       nodejs \
       yarn
+
+FROM base
+
+WORKDIR /app
+
+COPY . .
 
 # Tell Puppeteer to skip installing Chrome. We'll be using the installed package.
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
@@ -24,7 +25,7 @@ RUN yarn install
 
 # Add user so we don't need --no-sandbox.
 RUN addgroup -S pptruser && adduser -S -g pptruser pptruser \
-    && mkdir -p /home/pptruser/Downloads /app \
+    && mkdir -p /home/pptruser/Downloads /app /app/tmp \
     && chown -R pptruser:pptruser /home/pptruser \
     && chown -R pptruser:pptruser /app
 

@@ -36,7 +36,6 @@ app.post('/webhook/:secret', async (req, res) => {
       picture: picture,
       participant: participant,
       title: title,
-      project: title.split(' | ')[0],
       html_url: html_url
     }
     await reportTelegram(payload)

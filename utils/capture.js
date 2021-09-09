@@ -27,6 +27,6 @@ export default async (url) => {
   }
   await page.goto(url, { waitUntil: 'networkidle0' })
   await page.screenshot({ path: filePath })
-  browser.close()
+  await browser.close()
   return filePath
 }

@@ -2,7 +2,7 @@ import dotEnv from 'dotenv'
 import bodyParser from 'body-parser'
 import express from 'express'
 import verifySecretKey from './utils/verifySecretKey.js'
-import Queue from './utils/queue.js'
+import redis from './utils/redis.js'
 dotEnv.config()
 
 const app = express()
@@ -13,11 +13,26 @@ app.get('/', (req, res) => {
   res.sendStatus(404)
 })
 
-app.post('/webhook/:secret', async (req, res) => {
+const PULL_REQUEST_MERGED = {
+  github: ['pull_request', 'merged']
+}
+
+const getMerged = (git, body) => {
+  const keys = PULL_REQUEST_MERGED[git]
+  let merged = body
+  for (const key of keys) {
+    merged = merged[key]
+  }
+  return merged
+}
+
+app.post('/webhook/:secret/:git', async (req, res) => {
   try {
     await verifySecretKey(req.params.secret)
-    if (!req.body.pull_request.merged) return res.send('waiting merge ...')
-    Queue.add({ pull_request: req.body.pull_request })
+    const git = req.params.git
+    if (!getMerged(git, req.body)) return res.send('pending ...')
+    const queue = redis(git)
+    queue.add({ git: git, body: req.body })
     return res.send('success')
   } catch (error) {
     console.log(error)

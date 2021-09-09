@@ -11,7 +11,7 @@ dotEnv.config()
 const apiId = process.env.API_ID
 const apiHash = process.env.API_HASH
 const apiSession = process.env.API_SESSION
-const stringSession = new StringSession(apiSession.toString())
+const stringSession = new StringSession(apiSession)
 
 const TELEGRAM_KEY = process.env.TELEGRAM_KEY
 const CHART_ID = process.env.CHART_ID
@@ -19,9 +19,9 @@ const apiTelegram = `https://api.telegram.org/${TELEGRAM_KEY}`
 
 const message = (payload) => {
   return `
-/lapor ${payload.title.replace(/['"]+/g, '')}
-Peserta: ${payload.participants.join(' ')}
-Lampiran: ${payload.html_url}
+/lapor ${payload.project} | ${payload.title}
+Peserta: ${payload.participant}
+Lampiran: ${payload.link}
 `
 }
 
@@ -40,31 +40,29 @@ const replyChat = async (replyToMsgId, payload) => {
   )
 }
 
-export default async (payload) => {
-  try {
-    const formData = {
-      chat_id: CHART_ID,
-      photo: {
-        value: fs.createReadStream(payload.picture),
-        options: {
-          filename: payload.picture,
-          contentType: 'image/png'
+export default (payload) => {
+  request.post(
+    {
+      url: apiTelegram + '/sendPhoto',
+      formData: {
+        chat_id: CHART_ID,
+        photo: {
+          value: fs.createReadStream(payload.picture),
+          options: {
+            filename: payload.picture,
+            contentType: 'image/png'
+          }
         }
       }
+    },
+    function cb (err, response) {
+      fs.unlinkSync(payload.picture)
+      if (err) {
+        return console.error('upload failed:', err)
+      }
+      const body = JSON.parse(response.body)
+      const { message_id: messageId } = body.result
+      replyChat(messageId, payload)
     }
-    request.post({ url: apiTelegram + '/sendPhoto', formData: formData },
-      function cb (err, response) {
-        fs.unlinkSync(payload.picture)
-        if (err) {
-          return console.error('upload failed:', err)
-        }
-        const body = JSON.parse(response.body)
-        const { message_id: messageId } = body.result
-        replyChat(messageId, payload)
-      }
-    )
-  } catch (error) {
-    console.log(error.message)
-    throw error
-  }
+  )
 }

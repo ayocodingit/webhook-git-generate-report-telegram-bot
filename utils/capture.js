@@ -15,15 +15,15 @@ export default async (url) => {
   const filePath = `tmp/${Date.now()}${Math.random()}.png`
   const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] })
   const page = await browser.newPage()
-  await page.setViewport({ width: 1024, height: 768, isLandscape: true})
+  await page.setViewport({ width: 1024, height: 768, isLandscape: true })
   if (login === 'true') {
     await page.goto(urlLogin, { waitUntil: 'networkidle2' })
-    await page.type(tagUsername, account);
-    await page.type(tagPassword, password);
+    await page.type(tagUsername, account)
+    await page.type(tagPassword, password)
     await Promise.all([
       page.click(tagSubmit),
-      page.waitForNavigation({ waitUntil: 'networkidle2' }),
-    ]);
+      page.waitForNavigation({ waitUntil: 'networkidle2' })
+    ])
   }
   await page.goto(url, { waitUntil: 'networkidle2' })
   await page.screenshot({ path: filePath })

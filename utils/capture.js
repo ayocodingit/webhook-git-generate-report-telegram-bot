@@ -4,14 +4,14 @@ import dotEnv from 'dotenv'
 dotEnv.config()
 
 const account = process.env.ACCOUNT
-const password = Buffer.from(process.env.PASSWORD, 'base64').toString();
+const password = Buffer.from(process.env.PASSWORD, 'base64').toString()
 
 const options = {
   github: {
     url: 'https://github.com/login',
     tagUsername: '#login_field',
     tagPassword: '#password',
-    tagSubmit: '.js-sign-in-button',
+    tagSubmit: '.js-sign-in-button'
   }
 }
 

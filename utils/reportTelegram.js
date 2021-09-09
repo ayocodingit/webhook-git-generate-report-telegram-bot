@@ -10,7 +10,7 @@ const apiTelegram = `https://api.telegram.org/${TELEGRAM_KEY}`
 const message = (payload) => {
   return `
 /lapor@Digiteam_bot ${payload.title.replace(/['"]+/g, '')}
-Peserta: ${payload.participants.join(', ')}
+Peserta: ${payload.participants.join(' ')}
 Lampiran: ${payload.html_url}
 `
 }

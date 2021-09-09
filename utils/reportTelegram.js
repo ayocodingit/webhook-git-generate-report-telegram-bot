@@ -31,7 +31,7 @@ const replyChat = async (replyToMsgId, payload) => {
     new Api.messages.SendMessage({
       peer: Number(CHART_ID),
       message: message(payload),
-      randomId: Math.ceil(Math.random() * 0xffffff) + Math.ceil(Math.random() * 0xffffff) + Date.now(),
+      randomId: Math.ceil(Math.random() * 0xffffff) + Date.now(),
       noWebpage: true,
       replyToMsgId: Number(replyToMsgId)
     })

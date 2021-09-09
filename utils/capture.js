@@ -18,10 +18,8 @@ export default async (url) => {
   await page.goto(urlLogin, { waitUntil: 'networkidle2' })
   await page.type(tagUsername, account)
   await page.type(tagPassword, password)
-  await Promise.all([
-    page.click(tagSubmit),
-    page.waitForNavigation({ waitUntil: 'networkidle2' })
-  ])
+  await page.click(tagSubmit)
+  await page.waitForNavigation({ waitUntil: 'networkidle2' })
   await page.goto(url, { waitUntil: 'networkidle2' })
   await page.screenshot({ path: filePath })
   await browser.close()

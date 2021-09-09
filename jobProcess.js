@@ -8,14 +8,14 @@ github.process(async function (job, done) {
   const { html_url: htmlUrl, body } = job.data.body.pull_request
   try {
     const payload = templateBody(body, htmlUrl)
-    await sendTelegram(job.data.git, done, payload)
+    await sendTelegram(job.data.git, payload)
   } catch (error) {
     console.log(error.message)
     done()
   }
 })
 
-const sendTelegram = async (git, done, payload) => {
+const sendTelegram = async (git, payload) => {
   try {
     const picture = await capture(payload.url, git)
     reportTelegram({
@@ -26,8 +26,7 @@ const sendTelegram = async (git, done, payload) => {
       link: payload.url
     })
   } catch (error) {
-    done()
-    console.log(error.message)
+    throw error
   }
 }
 

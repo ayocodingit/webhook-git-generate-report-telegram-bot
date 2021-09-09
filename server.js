@@ -17,7 +17,7 @@ const PULL_REQUEST_MERGED = {
   github: ['pull_request', 'merged']
 }
 
-const getMerged = (git, body) => {
+const isMerged = (git, body) => {
   const keys = PULL_REQUEST_MERGED[git]
   let merged = body
   for (const key of keys) {
@@ -30,7 +30,7 @@ app.post('/webhook/:secret/:git', async (req, res) => {
   try {
     await verifySecretKey(req.params.secret)
     const git = req.params.git
-    if (!getMerged(git, req.body)) return res.send('pending ...')
+    if (!isMerged(git, req.body)) return res.send('pending ...')
     const queue = redis(git)
     queue.add({ git: git, body: req.body })
     return res.send('success')

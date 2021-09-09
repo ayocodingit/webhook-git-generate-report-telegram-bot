@@ -17,6 +17,7 @@ export default async (url) => {
   const page = await browser.newPage()
   await page.setViewport({ width: 1200, height: 768 })
   if (login === 'true') {
+    console.log(login);
     await page.goto(urlLogin, { waitUntil: 'networkidle0' })
     await page.type(tagUsername, account)
     await page.type(tagPassword, password)

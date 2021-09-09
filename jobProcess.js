@@ -6,8 +6,13 @@ const github = redis('github')
 
 github.process(async function (job, done) {
   const { html_url: htmlUrl, body } = job.data.body.pull_request
-  const payload = templateBody(body, htmlUrl)
-  await sendTelegram(job.data.git, done, payload)
+  try {
+    const payload = templateBody(body, htmlUrl)
+    await sendTelegram(job.data.git, done, payload)
+  } catch (error) {
+    console.log(error.message)
+    done()
+  }
 })
 
 const sendTelegram = async (git, done, payload) => {
@@ -28,9 +33,9 @@ const sendTelegram = async (git, done, payload) => {
 
 const templateBody = (body, url) => {
   const payload = {
-    project: payloadRegex.project.exec('project: desa digital 1'),
-    title: payloadRegex.title.exec('title: pengembangan fitur'),
-    participant: payloadRegex.participant.exec('participant: @firmanalamsyah580 @yohang88')
+    project: payloadRegex.project.exec(body),
+    title: payloadRegex.title.exec(body),
+    participant: payloadRegex.participant.exec(body)
   }
   for (const item in payload) {
     if (payload[item] === null) {

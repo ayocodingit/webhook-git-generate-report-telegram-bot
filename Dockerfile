@@ -34,4 +34,6 @@ USER pptruser
 
 EXPOSE 3003
 
-CMD [ "yarn", "run", "start" ]
+RUN chmod +x ./entrypoint.sh
+
+ENTRYPOINT [ "./entrypoint.sh" ]

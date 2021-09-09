@@ -8,3 +8,13 @@ services:
       - .env
     ports:
       - "${PORT}:${PORT}"
+
+  job:
+    build: .
+    restart: always
+    container_name: "${APP_NAME}_JOB"
+    env_file:
+      - .env
+    environment:
+      - DOCKER_APP=job
+

@@ -1,11 +1,9 @@
 import dotEnv from 'dotenv'
 dotEnv.config()
-import capture from './utils/capture.js'
 import bodyParser from 'body-parser'
 import express from 'express'
 import verifySecretKey from './utils/verifySecretKey.js'
-import getParticipant from './utils/participants.js'
-import reportTelegram from './utils/reportTelegram.js'
+import Queue from './utils/queue.js';
 
 const app = express()
 app.use(bodyParser.urlencoded({extended: true}))
@@ -17,19 +15,9 @@ app.get('/', (req, res) => {
 
 app.post('/webhook/:secret', async (req, res) => {
   try {
-    const { html_url, title, user, number, head, merged } = req.body.pull_request;
-    const ownerRepo = head.repo.full_name.split('/')
     await verifySecretKey(req.params.secret)
-    // if (!merged) return res.send('waiting merge ...')
-    const picture = await capture(html_url);
-    const config = { owner: ownerRepo[0], repo: ownerRepo[1],  number: number }
-    const participants = await getParticipant(user, config)
-    await reportTelegram({
-      picture: picture,
-      participants: participants,
-      title: title,
-      html_url: html_url
-    })
+    if (!req.body.pull_request.merged) return res.send('waiting merge ...')
+    Queue.add({ pull_request:req.body.pull_request });
     return res.send('success');
   } catch (error) {
     console.log(error);

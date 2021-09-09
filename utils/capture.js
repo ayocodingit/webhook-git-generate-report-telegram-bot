@@ -16,7 +16,7 @@ export default async (url) => {
   const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] })
   const page = await browser.newPage()
   await page.setViewport({ width: 1200, height: 768 })
-  if (login === 'true') {
+  if (login == true) {
     console.log(login);
     await page.goto(urlLogin, { waitUntil: 'networkidle0' })
     await page.type(tagUsername, account)

@@ -13,7 +13,7 @@ const tagSubmit = process.env.TAG_SUBMIT
 
 export default async (url) => {
   const filePath = `tmp/${Date.now()}${Math.random()}.png`
-  const browser = await puppeteer.launch({ headless: false, args: ['--no-sandbox'] })
+  const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] })
   const page = await browser.newPage()
   await page.setViewport({ width: 1200, height: 768 })
   if (login === 'true') {

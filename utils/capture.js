@@ -16,16 +16,13 @@ export default async (url) => {
   const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] })
   const page = await browser.newPage()
   await page.setViewport({ width: 1200, height: 768 })
-  if (login == true) {
-    console.log(login);
-    await page.goto(urlLogin, { waitUntil: 'networkidle0' })
-    await page.type(tagUsername, account)
-    await page.type(tagPassword, password)
-    await Promise.all([
-      page.click(tagSubmit),
-      page.waitForNavigation({ waitUntil: 'networkidle0' })
-    ])
-  }
+  await page.goto(urlLogin, { waitUntil: 'networkidle0' })
+  await page.type(tagUsername, account)
+  await page.type(tagPassword, password)
+  await Promise.all([
+    page.click(tagSubmit),
+    page.waitForNavigation({ waitUntil: 'networkidle0' })
+  ])
   await page.goto(url, { waitUntil: 'networkidle0' })
   await page.screenshot({ path: filePath })
   await browser.close()

@@ -15,7 +15,7 @@ export default async (url) => {
   const filePath = `tmp/${Date.now()}${Math.random()}.png`
   const browser = await puppeteer.launch({ args: ['--no-sandbox'] })
   const page = await browser.newPage()
-  await page.setViewport({ width: 1024, height: 768, isLandscape: true })
+  await page.setViewport({ width: 1200, height: 768 })
   if (login === 'true') {
     await page.goto(urlLogin, { waitUntil: 'networkidle0' })
     await page.type(tagUsername, account)
@@ -25,7 +25,7 @@ export default async (url) => {
       page.waitForNavigation({ waitUntil: 'networkidle0' })
     ])
   }
-  await page.goto(url, { waitUntil: 'networkidle2' })
+  await page.goto(url, { waitUntil: 'networkidle0' })
   await page.screenshot({ path: filePath })
   await browser.close()
   return filePath

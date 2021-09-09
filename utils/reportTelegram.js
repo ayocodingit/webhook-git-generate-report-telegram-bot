@@ -3,6 +3,8 @@ import request from 'request'
 import dotEnv from 'dotenv'
 import { Api, TelegramClient } from 'telegram'
 import { StringSession } from 'telegram/sessions/index.js'
+import random from 'random-bigint'
+const randomId = random(128)
 
 dotEnv.config()
 
@@ -31,7 +33,7 @@ const replyChat = async (replyToMsgId, payload) => {
     new Api.messages.SendMessage({
       peer: Number(CHART_ID),
       message: message(payload),
-      randomId: Math.ceil(Math.random() * 0xffffff) + Math.ceil(Math.random() * 0xffffff),
+      randomId: randomId,
       noWebpage: true,
       replyToMsgId: Number(replyToMsgId)
     })

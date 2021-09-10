@@ -30,9 +30,10 @@ gitlab.process(async function (job, done) {
 const execJob = async (job, url, body) => {
   try {
     const payload = await templateBody(body, url)
-    console.log(payload);
+    console.log(payload)
     await sendTelegram(job.data.git, payload)
   } catch (error) {
+    console.log(error.message)
     throw error
   }
 }

@@ -11,6 +11,7 @@ github.process(async function (job, done) {
     await execJob(job, htmlUrl, body)
     done()
   } catch (error) {
+    done()
     console.log(error.message)
     throw error
   }
@@ -22,6 +23,7 @@ gitlab.process(async function (job, done) {
     await execJob(job, url, description)
     done()
   } catch (error) {
+    done()
     console.log(error.message)
     throw error
   }

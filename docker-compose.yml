@@ -6,6 +6,8 @@ services:
     container_name: "${APP_NAME}_APP"
     env_file:
       - .env
+    environment:
+      - REDIS_HOST=172.24.0.2
     ports:
       - "${PORT}:${PORT}"
 
@@ -17,4 +19,5 @@ services:
       - .env
     environment:
       - DOCKER_APP=job
+      - REDIS_HOST=172.24.0.2
 

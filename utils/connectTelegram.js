@@ -16,7 +16,7 @@ const connectTelegram = async () => {
   })
   await client.start({
     phoneNumber: await input.text('Please enter your number: '),
-    password: await input.text('Please enter your password: '),
+    password: await input.password('Please enter your password: '),
     phoneCode: await input.text('Please enter the code you received: '),
     onError: (err) => console.log(err)
   })

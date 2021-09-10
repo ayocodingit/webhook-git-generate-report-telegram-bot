@@ -1,6 +1,6 @@
-FROM registry.digitalservice.id/proxyjds/library/alpine
+FROM registry.digitalservice.id/proxyjds/library/alpine:edge
 
-RUN apk add --no-cache chromium \
+RUN apk add chromium \
       nss \
       freetype \
       harfbuzz \

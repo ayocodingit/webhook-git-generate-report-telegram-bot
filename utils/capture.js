@@ -8,7 +8,6 @@ const password = Buffer.from(process.env.PASSWORD, 'base64').toString()
 
 const options = {
   github: {
-    url: 'https://github.com/login',
     tagUsername: '#login_field',
     tagPassword: '#password',
     tagSubmit: '.js-sign-in-button'
@@ -24,12 +23,11 @@ const options = {
 export default async (url, git) => {
   const property = options[git]
   const filePath = `tmp/${Date.now()}${Math.random()}.png`
-  const browser = await puppeteer.launch({ args: ['--no-sandbox'] })
+  const browser = await puppeteer.launch({  headless:false, args: ['--no-sandbox'] })
   const page = await browser.newPage()
   await page.setViewport({ width: 1200, height: 768 })
-  if (git === 'github') {
-    await page.goto(property.url, { waitUntil: 'networkidle0' })
-    await page.waitForTimeout(2000)
+  await page.goto(url, { waitUntil: 'networkidle2' })
+  if (await page.$(property.tagUsername) !== null) {
     await page.type(property.tagUsername, account)
     await page.type(property.tagPassword, password)
     await Promise.all([
@@ -37,7 +35,6 @@ export default async (url, git) => {
       page.waitForNavigation({ waitUntil: 'networkidle0' })
     ])
   }
-  await page.goto(url, { waitUntil: 'networkidle2' })
   await page.screenshot({ path: filePath })
   await browser.close()
   return filePath

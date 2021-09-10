@@ -14,16 +14,23 @@ app.get('/', (req, res) => {
 })
 
 const PULL_REQUEST_MERGED = {
-  github: ['pull_request', 'merged']
+  github: {
+    locations: ['pull_request', 'merged'],
+    condition: true
+  },
+  gitlab: {
+    locations: ['object_attributes', 'action'],
+    condition: 'merge'
+  }
 }
 
 const isMerged = (git, body) => {
-  const keys = PULL_REQUEST_MERGED[git]
-  let merged = body
-  for (const key of keys) {
-    merged = merged[key]
+  const locations = PULL_REQUEST_MERGED[git].locations
+  let state = body
+  for (const location of locations) {
+    state = state[location]
   }
-  return merged
+  return state === PULL_REQUEST_MERGED[git].condition
 }
 
 app.post('/webhook/:secret/:git', async (req, res) => {

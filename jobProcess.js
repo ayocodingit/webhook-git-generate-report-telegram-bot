@@ -3,17 +3,37 @@ import reportTelegram from './utils/reportTelegram.js'
 import redis from './utils/redis.js'
 
 const github = redis('github')
+const gitlab = redis('gitlab')
 
 github.process(async function (job, done) {
   const { html_url: htmlUrl, body } = job.data.body.pull_request
   try {
-    const payload = templateBody(body, htmlUrl)
-    await sendTelegram(job.data.git, payload)
+    await execJob(job, done, htmlUrl, body)
   } catch (error) {
     console.log(error.message)
-    done()
+    throw error
   }
 })
+
+gitlab.process(async function (job, done) {
+  const { url, description } = job.data.body.object_attributes
+  try {
+    await execJob(job, done, url, description)
+  } catch (error) {
+    console.log(error.message)
+    throw error
+  }
+})
+
+const execJob = async (job, done, url, body) => {
+  try {
+    const payload = templateBody(body, url)
+    await sendTelegram(job.data.git, payload)
+  } catch (error) {
+    done()
+    throw error
+  }
+}
 
 const sendTelegram = async (git, payload) => {
   try {
@@ -26,6 +46,7 @@ const sendTelegram = async (git, payload) => {
       link: payload.url
     })
   } catch (error) {
+    console.log(error.message)
     throw error
   }
 }

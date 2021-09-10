@@ -29,7 +29,7 @@ Lampiran: ${payload.link}
 const client = new TelegramClient(stringSession, Number(apiId), apiHash, {})
 
 const replyChat = async (replyToMsgId, payload) => {
-  await client.connect()
+  if (!client.connected) await client.connect()
   await client.invoke(
     new Api.messages.SendMessage({
       peer: Number(CHART_ID),

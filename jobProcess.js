@@ -5,10 +5,10 @@ import redis from './utils/redis.js'
 const github = redis('github')
 const gitlab = redis('gitlab')
 
-github.process(async function (job, done) {
+github.process(async function (job) {
   const { html_url: htmlUrl, body } = job.data.body.pull_request
   try {
-    await execJob(job, done, htmlUrl, body)
+    await execJob(job, htmlUrl, body)
     done()
   } catch (error) {
     console.log(error.message)
@@ -19,7 +19,7 @@ github.process(async function (job, done) {
 gitlab.process(async function (job, done) {
   const { url, description } = job.data.body.object_attributes
   try {
-    await execJob(job, done, url, description)
+    await execJob(job, url, description)
     done()
   } catch (error) {
     console.log(error.message)
@@ -27,7 +27,7 @@ gitlab.process(async function (job, done) {
   }
 })
 
-const execJob = async (job, done, url, body) => {
+const execJob = async (job, url, body) => {
   try {
     const payload = await templateBody(body, url)
     await sendTelegram(job.data.git, payload)

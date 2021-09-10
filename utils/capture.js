@@ -27,15 +27,15 @@ export default async (url, git) => {
   const page = await browser.newPage()
   await page.setViewport({ width: 1200, height: 768 })
   await page.goto(url, { waitUntil: 'networkidle2' })
-  let max = 0
-  while (await page.$(property.tagUsername) !== null && max < 2) {
+  if (await page.$(property.tagUsername) !== null) {
+    await page.type(property.tagUsername, '')
+    await page.type(property.tagPassword, '')
     await page.type(property.tagUsername, account)
     await page.type(property.tagPassword, password)
     await Promise.all([
       page.click(property.tagSubmit, { delay: 2 }),
       page.waitForNavigation({ waitUntil: 'networkidle0' })
     ])
-    max++
   }
   await page.screenshot({ path: filePath })
   await browser.close()

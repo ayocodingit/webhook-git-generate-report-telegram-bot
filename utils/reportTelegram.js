@@ -54,7 +54,7 @@ export default (payload) => {
             contentType: 'image/png'
           }
         },
-        disable_notification: true
+        disable_notification: 'true'
       }
     },
     function cb (err, response) {

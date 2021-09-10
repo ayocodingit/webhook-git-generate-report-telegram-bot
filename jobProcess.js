@@ -9,6 +9,7 @@ github.process(async function (job, done) {
   const { html_url: htmlUrl, body } = job.data.body.pull_request
   try {
     await execJob(job, done, htmlUrl, body)
+    done()
   } catch (error) {
     console.log(error.message)
     throw error
@@ -19,6 +20,7 @@ gitlab.process(async function (job, done) {
   const { url, description } = job.data.body.object_attributes
   try {
     await execJob(job, done, url, description)
+    done()
   } catch (error) {
     console.log(error.message)
     throw error
@@ -30,7 +32,6 @@ const execJob = async (job, done, url, body) => {
     const payload = await templateBody(body, url)
     await sendTelegram(job.data.git, payload)
   } catch (error) {
-    done()
     throw error
   }
 }

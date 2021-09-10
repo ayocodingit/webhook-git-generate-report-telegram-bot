@@ -5,7 +5,7 @@ import redis from './utils/redis.js'
 const github = redis('github')
 const gitlab = redis('gitlab')
 
-github.process(async function (job) {
+github.process(async function (job, done) {
   const { html_url: htmlUrl, body } = job.data.body.pull_request
   try {
     await execJob(job, htmlUrl, body)
@@ -30,6 +30,7 @@ gitlab.process(async function (job, done) {
 const execJob = async (job, url, body) => {
   try {
     const payload = await templateBody(body, url)
+    console.log(payload);
     await sendTelegram(job.data.git, payload)
   } catch (error) {
     throw error

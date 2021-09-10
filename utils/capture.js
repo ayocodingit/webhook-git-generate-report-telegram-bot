@@ -23,7 +23,7 @@ const options = {
 export default async (url, git) => {
   const property = options[git]
   const filePath = `tmp/${Date.now()}${Math.random()}.png`
-  const browser = await puppeteer.launch({  headless:false, args: ['--no-sandbox'] })
+  const browser = await puppeteer.launch({ args: ['--no-sandbox'] })
   const page = await browser.newPage()
   await page.setViewport({ width: 1200, height: 768 })
   await page.goto(url, { waitUntil: 'networkidle2' })

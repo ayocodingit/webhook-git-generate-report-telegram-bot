@@ -41,7 +41,7 @@ const sendTelegram = async (git, payload) => {
   try {
     reportTelegram({
       picture: await capture(payload.url, git),
-      participant: payload.participant,
+      participants: payload.participants,
       title: payload.title,
       project: payload.project,
       link: payload.url
@@ -56,7 +56,7 @@ const templateBody = async (body, url) => {
   const payload = {
     project: payloadRegex.project.exec(body),
     title: payloadRegex.title.exec(body),
-    participant: payloadRegex.participant.exec(body)
+    participants: payloadRegex.participants.exec(body)
   }
   for (const item in payload) {
     if (payload[item] === null) {
@@ -75,5 +75,5 @@ const regex = (string) => {
 const payloadRegex = {
   project: regex('project: (.+)'),
   title: regex('title: (.+)'),
-  participant: regex('participant: (.+)')
+  participants: regex('participants: (.+)')
 }

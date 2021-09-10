@@ -5,7 +5,6 @@ dotEnv.config()
 
 const account = process.env.ACCOUNT
 const password = Buffer.from(process.env.PASSWORD, 'base64').toString()
-console.log(account, password);
 
 const options = {
   github: {
@@ -27,7 +26,10 @@ export default async (url, git) => {
   const browser = await puppeteer.launch({ args: ['--no-sandbox'] })
   const page = await browser.newPage()
   await page.setViewport({ width: 1200, height: 768 })
-  await page.goto(url, { waitUntil: 'networkidle0' })
+  await Promise.all([
+    page.goto(url, { waitUntil: 'networkidle2' }),
+    page.waitForNavigation({ waitUntil: 'networkidle0' })
+  ])
   if (await page.$(property.tagUsername) !== null) {
     await page.type(property.tagUsername, account)
     await page.type(property.tagPassword, password)

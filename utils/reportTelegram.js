@@ -35,7 +35,8 @@ const replyChat = async (replyToMsgId, payload) => {
       message: message(payload),
       randomId: randomId,
       noWebpage: true,
-      replyToMsgId: Number(replyToMsgId)
+      replyToMsgId: Number(replyToMsgId),
+      silent: true
     })
   )
 }
@@ -52,7 +53,8 @@ export default (payload) => {
             filename: payload.picture,
             contentType: 'image/png'
           }
-        }
+        },
+        disable_notification: true
       }
     },
     function cb (err, response) {

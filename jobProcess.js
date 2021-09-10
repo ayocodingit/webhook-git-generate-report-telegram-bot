@@ -27,7 +27,7 @@ gitlab.process(async function (job, done) {
 
 const execJob = async (job, done, url, body) => {
   try {
-    const payload = templateBody(body, url)
+    const payload = await templateBody(body, url)
     await sendTelegram(job.data.git, payload)
   } catch (error) {
     done()
@@ -37,9 +37,8 @@ const execJob = async (job, done, url, body) => {
 
 const sendTelegram = async (git, payload) => {
   try {
-    const picture = await capture(payload.url, git)
     reportTelegram({
-      picture: picture,
+      picture: await capture(payload.url, git),
       participant: payload.participant,
       title: payload.title,
       project: payload.project,
@@ -51,7 +50,7 @@ const sendTelegram = async (git, payload) => {
   }
 }
 
-const templateBody = (body, url) => {
+const templateBody = async (body, url) => {
   const payload = {
     project: payloadRegex.project.exec(body),
     title: payloadRegex.title.exec(body),

@@ -2,7 +2,8 @@ import dotEnv from 'dotenv'
 import bodyParser from 'body-parser'
 import express from 'express'
 import verifySecretKey from './utils/verifySecretKey.js'
-import redis from './utils/redis.js'
+import connectionQueue from './utils/connectQueue.js'
+import isMerged from './utils/isMerged.js'
 dotEnv.config()
 
 const app = express()
@@ -13,32 +14,12 @@ app.get('/', (req, res) => {
   res.sendStatus(404)
 })
 
-const PULL_REQUEST_MERGED = {
-  github: {
-    locations: ['pull_request', 'merged'],
-    condition: true
-  },
-  gitlab: {
-    locations: ['object_attributes', 'action'],
-    condition: 'merge'
-  }
-}
-
-const isMerged = (git, body) => {
-  const locations = PULL_REQUEST_MERGED[git].locations
-  let state = body
-  for (const location of locations) {
-    state = state[location]
-  }
-  return state === PULL_REQUEST_MERGED[git].condition
-}
-
 app.post('/webhook/:secret/:git', async (req, res) => {
   try {
     await verifySecretKey(req.params.secret)
     const git = req.params.git
     if (!isMerged(git, req.body)) return res.send('pending ...')
-    const queue = redis(git)
+    const queue = connectionQueue(git)
     queue.add({ git: git, body: req.body })
     return res.send('success')
   } catch (error) {

@@ -19,22 +19,25 @@ const options = {
   }
 }
 
-export default async (url, git) => {
-  const property = options[git]
-  const filePath = `tmp/${Date.now()}${Math.random()}.png`
+const screenshot = async (url, git) => {
+  const option = options[git]
+  let filePath = `tmp/${Date.now()}${Math.random()}.png`
   const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-web-security'] })
   const page = await browser.newPage()
   await page.setViewport({ height: 1280, width: 1080 })
   await page.goto(url, { waitUntil: 'load' })
-  if (await page.$(property.tagUsername) !== null) {
-    await page.type(property.tagUsername, account)
-    await page.type(property.tagPassword, password)
+  if (await page.$(option.tagUsername) !== null) {
+    await page.type(option.tagUsername, account)
+    await page.type(option.tagPassword, password)
     await Promise.all([
-      page.click(property.tagSubmit),
+      page.click(option.tagSubmit),
       page.waitForNavigation({ waitUntil: 'networkidle0' })
     ])
   }
-  await page.screenshot({ path: filePath })
+  if (page.url === url) await page.screenshot({ path: filePath })
+  else filePath = null
   await browser.close()
   return filePath
 }
+
+export default screenshot

@@ -9,7 +9,9 @@ services:
      - $PWD/redis:/var/lib/redis
 
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: docker-config/Dockerfile
     restart: always
     container_name: "${APP_NAME}_APP"
     image: webhook-image

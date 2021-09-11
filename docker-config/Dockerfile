@@ -30,6 +30,6 @@ USER pptruser
 
 EXPOSE 3003
 
-RUN chmod +x ./entrypoint.sh
+RUN chmod +x ./docker-config/entrypoint.sh
 
-ENTRYPOINT [ "./entrypoint.sh" ]
+ENTRYPOINT [ "./docker-config/entrypoint.sh" ]

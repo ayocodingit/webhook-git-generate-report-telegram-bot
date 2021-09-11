@@ -13,7 +13,6 @@ const options = {
     tagSubmit: '.js-sign-in-button'
   },
   gitlab: {
-    url: 'https://gitlab.com/users/sign_in',
     tagUsername: '#user_login',
     tagPassword: '#user_password',
     tagSubmit: '.btn-confirm'
@@ -26,10 +25,9 @@ export default async (url, git) => {
   const browser = await puppeteer.launch({ args: ['--no-sandbox'] })
   const page = await browser.newPage()
   await page.setViewport({ width: 1200, height: 768 })
-  await page.goto(url, { waitUntil: 'networkidle2' })
+  await page.goto(url, { waitUntil: 'domcontentloaded' })
+  await page.waitForTimeout(5000)
   if (await page.$(property.tagUsername) !== null) {
-    await page.type(property.tagUsername, '')
-    await page.type(property.tagPassword, '')
     await page.type(property.tagUsername, account)
     await page.type(property.tagPassword, password)
     await Promise.all([

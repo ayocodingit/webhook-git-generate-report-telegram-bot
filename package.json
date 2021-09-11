@@ -10,7 +10,7 @@
     "express": "^4.17.1",
     "fs": "0.0.1-security",
     "input": "^1.0.1",
-    "puppeteer": "^6.0.0",
+    "puppeteer": "^10.2.0",
     "random-bigint": "0.0.1",
     "request": "^2.88.2",
     "telegram": "^1.8.10"

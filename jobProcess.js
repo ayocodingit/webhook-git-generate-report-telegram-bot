@@ -7,30 +7,19 @@ const gitlab = redis('gitlab')
 
 github.process(async function (job, done) {
   const { html_url: htmlUrl, body } = job.data.body.pull_request
-  try {
-    await execJob(job, htmlUrl, body)
-    done()
-  } catch (error) {
-    console.log(error.message)
-    throw error
-  }
+  await execJob(job, htmlUrl, body, done)
 })
 
 gitlab.process(async function (job, done) {
   const { url, description } = job.data.body.object_attributes
-  try {
-    await execJob(job, url, description)
-    done()
-  } catch (error) {
-    console.log(error.message)
-    throw error
-  }
+  await execJob(job, url, description, done)
 })
 
-const execJob = async (job, url, body) => {
+const execJob = async (job, url, body, done) => {
   try {
-    const payload = await templateBody(body, url)
+    const payload = await templateBody(body, url, done)
     await sendTelegram(job.data.git, payload)
+    done()
   } catch (error) {
     console.log(error.message)
     throw error
@@ -52,7 +41,7 @@ const sendTelegram = async (git, payload) => {
   }
 }
 
-const templateBody = async (body, url) => {
+const templateBody = async (body, url, done) => {
   const payload = {
     project: payloadRegex.project.exec(body),
     title: payloadRegex.title.exec(body),
@@ -60,6 +49,7 @@ const templateBody = async (body, url) => {
   }
   for (const item in payload) {
     if (payload[item] === null) {
+      done()
       throw Error('payload not valid')
     }
     payload[item] = payload[item][1]

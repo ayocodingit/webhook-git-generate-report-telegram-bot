@@ -24,7 +24,7 @@ export default async (url, git) => {
   const filePath = `tmp/${Date.now()}${Math.random()}.png`
   const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-web-security'] })
   const page = await browser.newPage()
-  await page.setViewport({ width: 1200, height: 768 })
+  await page.setViewport({ height: 1280, width: 1080 })
   await page.goto(url, { waitUntil: 'load' })
   if (await page.$(property.tagUsername) !== null) {
     await page.type(property.tagUsername, account)

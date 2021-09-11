@@ -15,14 +15,14 @@ const apiHash = process.env.API_HASH
 const apiSession = process.env.API_SESSION
 const stringSession = new StringSession(apiSession)
 
-const TELEGRAM_KEY = process.env.TELEGRAM_KEY
-const CHART_ID = process.env.CHART_ID
-const apiTelegram = `https://api.telegram.org/${TELEGRAM_KEY}`
+const TELEGRAM_BOT = process.env.TELEGRAM_BOT
+const CHAT_ID = process.env.CHAT_ID
+const apiTelegram = `https://api.telegram.org/${TELEGRAM_BOT}`
 const client = new TelegramClient(stringSession, Number(apiId), apiHash, {})
 
 const message = (payload) => {
   return `
-/lapor@Digiteam_bot ${payload.project} | ${payload.title}
+/lapor ${payload.project} | ${payload.title}
 Peserta: ${payload.participants}
 Lampiran: ${payload.url}
 `
@@ -32,7 +32,7 @@ const sendMessage = async (payload, replyToMsgId = null) => {
   if (!client.connected) await client.connect()
   await client.invoke(
     new Api.messages.SendMessage({
-      peer: Number(CHART_ID),
+      peer: Number(CHAT_ID),
       message: message(payload),
       randomId: randomId,
       noWebpage: true,
@@ -47,7 +47,7 @@ const sendMessageWithBot = (payload) => {
     {
       url: apiTelegram + '/sendMessage',
       formData: {
-        chat_id: CHART_ID,
+        chat_id: Number(CHAT_ID),
         text: message(payload)
       }
     },
@@ -64,7 +64,7 @@ const sendPhoto = (payload) => {
     {
       url: apiTelegram + '/sendPhoto',
       formData: {
-        chat_id: CHART_ID,
+        chat_id: Number(CHAT_ID),
         photo: {
           value: fs.createReadStream(payload.picture),
           options: {

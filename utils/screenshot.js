@@ -34,7 +34,7 @@ const screenshot = async (url, git) => {
       page.waitForNavigation({ waitUntil: 'networkidle0' })
     ])
   }
-  if (page.url === url) await page.screenshot({ path: filePath })
+  if (await page.url() === url) await page.screenshot({ path: filePath })
   else filePath = null
   await browser.close()
   return filePath

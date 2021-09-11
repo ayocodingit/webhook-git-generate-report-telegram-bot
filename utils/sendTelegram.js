@@ -42,6 +42,23 @@ const sendMessage = async (payload, replyToMsgId = null) => {
   )
 }
 
+const sendMessageWithBot = (payload) => {
+  request.post(
+    {
+      url: apiTelegram + '/sendMessage',
+      formData: {
+        chat_id: CHART_ID,
+        text: message(payload)
+      }
+    },
+    function cb (err) {
+      if (err) {
+        return console.error('send message failed:', err)
+      }
+    }
+  )
+}
+
 const sendPhoto = (payload) => {
   request.post(
     {
@@ -73,7 +90,7 @@ const sendPhoto = (payload) => {
 const sendTelegram = async (git, payload) => {
   try {
     const image = await screenshot(payload.url, git)
-    if (!image) return sendMessage(payload)
+    if (!image) return sendMessageWithBot(payload)
     sendPhoto(Object.assign(payload, { picture: image }))
   } catch (error) {
     console.log(error.message)

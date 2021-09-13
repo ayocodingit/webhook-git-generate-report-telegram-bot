@@ -5,8 +5,7 @@ import { Api, TelegramClient } from 'telegram'
 import { StringSession } from 'telegram/sessions/index.js'
 import random from 'random-bigint'
 import screenshot from './screenshot.js'
-
-const randomId = random(128)
+import sendElastic from './elastic.js'
 
 dotEnv.config()
 
@@ -21,6 +20,8 @@ const apiTelegram = `https://api.telegram.org/${TELEGRAM_BOT}`
 const client = new TelegramClient(stringSession, Number(apiId), apiHash, {})
 
 const message = (payload) => {
+  sendElastic(payload)
+
   return `
 /lapor ${payload.project} | ${payload.title}
 Peserta: ${payload.participants}
@@ -34,7 +35,7 @@ const sendMessage = async (payload, replyToMsgId) => {
     new Api.messages.SendMessage({
       peer: Number(CHAT_ID),
       message: message(payload),
-      randomId: randomId,
+      randomId: random(128),
       noWebpage: true,
       replyToMsgId: Number(replyToMsgId)
     })

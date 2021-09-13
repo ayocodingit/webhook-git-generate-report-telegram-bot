@@ -18,7 +18,7 @@ const isMerged = (git, body) => {
 
   let conditionAdd = true
   if (git === 'github') {
-    conditionAdd = body.pull_request.merged && true
+    conditionAdd = body.pull_request.merged
   }
 
   return state === PULL_REQUEST_MERGED[git].condition && conditionAdd

@@ -28,7 +28,7 @@ Lampiran: ${payload.url}
 `
 }
 
-const sendMessage = async (payload, replyToMsgId = null) => {
+const sendMessage = async (payload, replyToMsgId) => {
   if (!client.connected) await client.connect()
   await client.invoke(
     new Api.messages.SendMessage({
@@ -36,8 +36,7 @@ const sendMessage = async (payload, replyToMsgId = null) => {
       message: message(payload),
       randomId: randomId,
       noWebpage: true,
-      replyToMsgId: replyToMsgId ? Number(replyToMsgId) : null,
-      silent: true
+      replyToMsgId: Number(replyToMsgId)
     })
   )
 }
@@ -71,8 +70,7 @@ const sendPhoto = (payload) => {
             filename: payload.picture,
             contentType: 'image/png'
           }
-        },
-        disable_notification: 'true'
+        }
       }
     },
     function cb (err, response) {

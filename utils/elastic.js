@@ -1,8 +1,8 @@
 import dotEnv from 'dotenv'
-dotEnv.config()
-
 import { Client } from '@elastic/elasticsearch'
 import moment from 'moment'
+
+dotEnv.config()
 
 const client = new Client({
   cloud: {
@@ -25,4 +25,4 @@ const sendElastic = async (payload) => {
   })
 }
 
-export default sendElastic;
+export default sendElastic

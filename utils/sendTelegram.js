@@ -5,7 +5,7 @@ import { Api, TelegramClient } from 'telegram'
 import { StringSession } from 'telegram/sessions/index.js'
 import random from 'random-bigint'
 import screenshot from './screenshot.js'
-import sendElastic from './elastic.js'
+import { sendBodyIsValid } from './elastic.js'
 
 dotEnv.config()
 
@@ -20,7 +20,7 @@ const apiTelegram = `https://api.telegram.org/${TELEGRAM_BOT}`
 const client = new TelegramClient(stringSession, Number(apiId), apiHash, {})
 
 const message = (payload) => {
-  sendElastic(payload)
+  sendBodyIsValid(payload)
 
   return `
 /lapor ${payload.project} | ${payload.title}

@@ -7,17 +7,27 @@ const gitlab = connectQueue('gitlab')
 
 github.process(async function (job, done) {
   const { html_url: htmlUrl, body } = job.data.body.pull_request
-  await execJob(job, htmlUrl, body, done)
+  const addition = {
+    repository_name: job.data.body.repo.name,
+    repository_url: job.data.body.repo.html_url,
+    platform: job.data.git
+  }
+  await execJob(job, htmlUrl, body, done, addition)
 })
 
 gitlab.process(async function (job, done) {
   const { url, description } = job.data.body.object_attributes
-  await execJob(job, url, description, done)
+  const addition = {
+    repository_name: job.data.body.repository.name,
+    repository_url: job.data.body.repository.homepage,
+    platform: job.data.git
+  }
+  await execJob(job, url, description, done, addition)
 })
 
-const execJob = async (job, url, body, done) => {
+const execJob = async (job, url, body, done, addition) => {
   try {
-    await sendTelegram(job.data.git, await templateDescription(body, url, done))
+    await sendTelegram(job.data.git, await templateDescription(body, url, done, addition))
     done()
   } catch (error) {
     console.log(error.message)

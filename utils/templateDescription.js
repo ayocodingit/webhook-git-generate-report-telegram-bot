@@ -1,21 +1,33 @@
-const templateDescription = async (body, url, done) => {
+import { sendBodyIsNotValid } from './elastic.js'
+
+const templateDescription = async (body, url, done, addition) => {
   const payload = getPayloadValid({
     project: payloadRegex.project.exec(body),
     title: payloadRegex.title.exec(body),
     participants: payloadRegex.participants.exec(body)
-  }, done)
+  })
+
+  if (!payload.isValidPayload) {
+    done()
+    sendBodyIsNotValid(addition)
+    throw Error('payload not valid')
+  }
+
+  payload.addition = addition
   payload.url = url
   return payload
 }
 
-const getPayloadValid = (payload, done) => {
+const getPayloadValid = (payload) => {
+  let isValidPayload = true
   for (const item in payload) {
     if (payload[item] === null) {
-      done()
-      throw Error('payload not valid')
+      isValidPayload = false
     }
     payload[item] = payload[item][1]
   }
+
+  payload.isValidPayload = isValidPayload
 
   return payload
 }

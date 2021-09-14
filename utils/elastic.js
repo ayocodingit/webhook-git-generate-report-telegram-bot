@@ -13,16 +13,32 @@ const client = new Client({
   }
 })
 
-const sendElastic = async (payload) => {
+const sendBodyIsValid = async (payload) => {
   await client.index({
     index: `${process.env.APP_NAME}-${moment().format('YYYY.MM.DD')}`,
     body: {
       project: payload.project,
       title: payload.title,
       participants: payload.participants.trimEnd().split(' '),
+      ...payload.addition,
+      isBodyValid: true,
       created_at: moment().toISOString()
     }
   })
 }
 
-export default sendElastic
+const sendBodyIsNotValid = async (payload) => {
+  await client.index({
+    index: `${process.env.APP_NAME}-${moment().format('YYYY.MM.DD')}`,
+    body: {
+      ...payload,
+      isBodyValid: false,
+      created_at: moment().toISOString()
+    }
+  })
+}
+
+export {
+  sendBodyIsValid,
+  sendBodyIsNotValid
+}

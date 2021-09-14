@@ -8,8 +8,8 @@ const gitlab = connectQueue('gitlab')
 github.process(async function (job, done) {
   const { html_url: htmlUrl, body } = job.data.body.pull_request
   const addition = {
-    repository_name: job.data.body.repo.name,
-    repository_url: job.data.body.repo.html_url,
+    repository_name: job.data.body.pull_request.head.repo.name,
+    repository_url: job.data.body.pull_request.head.repo.html_url,
     platform: job.data.git
   }
   await execJob(job, htmlUrl, body, done, addition)

@@ -19,7 +19,7 @@ const sendElastic = async (payload) => {
     body: {
       project: payload.project,
       title: payload.title,
-      participants: payload.participants.split(' '),
+      participants: payload.participants.trim().split(' '),
       created_at: moment().toISOString()
     }
   })

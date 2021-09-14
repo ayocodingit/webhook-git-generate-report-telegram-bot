@@ -17,12 +17,11 @@ const sendBodyIsValid = async (payload) => {
   await client.index({
     index: `${process.env.APP_NAME}-${moment().format('YYYY.MM.DD')}`,
     body: {
-      project: payload.project,
-      title: payload.title,
+      project: payload.project.trimEnd(),
+      title: payload.title.trimEnd(),
       participants: payload.participants.trimEnd().split(' '),
       ...payload.addition,
-      isBodyValid: true,
-      created_at: moment().toISOString()
+      isBodyValid: true
     }
   })
 }
@@ -32,8 +31,7 @@ const sendBodyIsNotValid = async (payload) => {
     index: `${process.env.APP_NAME}-${moment().format('YYYY.MM.DD')}`,
     body: {
       ...payload,
-      isBodyValid: false,
-      created_at: moment().toISOString()
+      isBodyValid: false
     }
   })
 }

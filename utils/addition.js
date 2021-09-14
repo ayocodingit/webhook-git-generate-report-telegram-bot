@@ -5,15 +5,13 @@ const properties = {
     repository_name: ['body', 'pull_request', 'head', 'repo', 'name'],
     repository_url: ['body', 'pull_request', 'head', 'repo', 'html_url'],
     platform: ['git'],
-    url: ['body', 'pull_request', 'html_url'],
-    author_username: ['body', 'pull_request', 'user', 'login']
+    url: ['body', 'pull_request', 'html_url']
   },
   gitlab: {
     repository_name: ['body', 'repository', 'name'],
     repository_url: ['body', 'repository', 'homepage'],
     platform: ['git'],
-    url: ['body', 'object_attributes', 'url'],
-    author_username: ['body', 'user', 'username']
+    url: ['body', 'object_attributes', 'url']
   }
 }
 

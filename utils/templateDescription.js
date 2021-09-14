@@ -1,4 +1,4 @@
-import { sendBodyIsNotValid } from './elastic.js'
+import { sendBodyIsNotValid } from './sendElastic.js'
 
 const templateDescription = async (body, url, done, addition) => {
   const payload = getPayloadValid({

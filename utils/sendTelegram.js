@@ -5,7 +5,7 @@ import { Api, TelegramClient } from 'telegram'
 import { StringSession } from 'telegram/sessions/index.js'
 import random from 'random-bigint'
 import screenshot from './screenshot.js'
-import { sendBodyIsValid } from './elastic.js'
+import { sendBodyIsValid } from './sendElastic.js'
 
 dotEnv.config()
 

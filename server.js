@@ -2,7 +2,7 @@ import dotEnv from 'dotenv'
 import bodyParser from 'body-parser'
 import express from 'express'
 import verifySecretKey from './utils/verifySecretKey.js'
-import connectionQueue from './utils/connectQueue.js'
+import connectQueue from './utils/connectQueue.js'
 import isMerged from './utils/isMerged.js'
 dotEnv.config()
 
@@ -19,7 +19,7 @@ app.post('/webhook/:secret/:git', async (req, res) => {
     await verifySecretKey(req.params.secret)
     const git = req.params.git
     if (!isMerged(git, req.body)) return res.send('pending ...')
-    const queue = connectionQueue(git)
+    const queue = connectQueue(git)
     queue.add({ git: git, body: req.body })
     return res.send('success')
   } catch (error) {

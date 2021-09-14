@@ -20,8 +20,6 @@ const apiTelegram = `https://api.telegram.org/${TELEGRAM_BOT}`
 const client = new TelegramClient(stringSession, Number(apiId), apiHash, {})
 
 const message = (payload) => {
-  sendBodyIsValid(payload)
-
   return `
 /lapor ${payload.project} | ${payload.title}
 Peserta: ${payload.participants}
@@ -40,6 +38,7 @@ const sendMessage = async (payload, replyToMsgId) => {
       replyToMsgId: Number(replyToMsgId)
     })
   )
+  sendBodyIsValid(payload)
 }
 
 const sendMessageWithBot = (payload) => {
@@ -55,6 +54,7 @@ const sendMessageWithBot = (payload) => {
       if (err) {
         return console.error('send message failed:', err)
       }
+      sendBodyIsValid(payload)
     }
   )
 }

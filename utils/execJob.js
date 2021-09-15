@@ -7,7 +7,6 @@ const execJob = async (job, url, body, done, addition) => {
     done()
   } catch (error) {
     console.log(error.message)
-    throw error
   }
 }
 

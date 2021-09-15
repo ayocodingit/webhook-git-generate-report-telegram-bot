@@ -5,17 +5,19 @@ const properties = {
     repository_name: ['body', 'pull_request', 'head', 'repo', 'name'],
     repository_url: ['body', 'pull_request', 'head', 'repo', 'html_url'],
     platform: ['git'],
-    url: ['body', 'pull_request', 'html_url']
+    url: ['body', 'pull_request', 'html_url'],
+    body: ['body', 'pull_request', 'body']
   },
   gitlab: {
     repository_name: ['body', 'repository', 'name'],
     repository_url: ['body', 'repository', 'homepage'],
     platform: ['git'],
-    url: ['body', 'object_attributes', 'url']
+    url: ['body', 'object_attributes', 'url'],
+    body: ['body', 'object_attributes', 'description']
   }
 }
 
-const addition = (data) => {
+const payload = (data) => {
   const property = properties[data.git]
   const item = {}
   for (const key in property) {
@@ -29,4 +31,4 @@ const addition = (data) => {
   return item
 }
 
-export default addition
+export default payload

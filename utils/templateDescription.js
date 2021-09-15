@@ -23,6 +23,7 @@ const getPayloadValid = (payload) => {
   for (const item in payload) {
     if (payload[item] === null) {
       isValidPayload = false
+      continue
     }
     payload[item] = payload[item][1]
   }

@@ -8,8 +8,8 @@ const templateDescription = async (body, url, done, addition) => {
   })
 
   if (!payload.isValidPayload) {
-    done()
     sendBodyIsNotValid(addition)
+    done()
     throw Error('payload not valid')
   }
 

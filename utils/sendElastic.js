@@ -1,8 +1,8 @@
 import moment from 'moment'
 import connectQueue from './connectQueue.js'
-const queue = connectQueue('elastic')
 
 const sendBodyIsValid = (payload) => {
+  const queue = connectQueue('elastic')
   const participants = payload.participants.trimEnd().split(' ')
   for (const participant of participants) {
     queue.add({
@@ -14,17 +14,24 @@ const sendBodyIsValid = (payload) => {
         ...payload.addition,
         isBodyValid: true
       }
+    }, {
+      delay: 30000,
+      attempts: 2
     })
   }
 }
 
 const sendBodyIsNotValid = (payload) => {
+  const queue = connectQueue('elastic')
   queue.add({
     index: `${process.env.APP_NAME}-${moment().format('YYYY.MM.DD')}`,
     body: {
       ...payload,
       isBodyValid: false
     }
+  }, {
+    delay: 30000,
+    attempts: 2
   })
 }
 

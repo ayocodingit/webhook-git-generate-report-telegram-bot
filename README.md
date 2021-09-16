@@ -1,5 +1,7 @@
 # Webhook Git Generate Report Telegram Bot
 
+<a href="https://codeclimate.com/github/ayocodingit/github-action-riset/maintainability"><img src="https://api.codeclimate.com/v1/badges/fa5e733404d71a1791a2/maintainability" /></a>
+
 This git webhook includes gitlab and github, installed in git organization settings, so all repos can use this webhook with one configuration. helps to automatically report each time according to the main task of making code or as a peer to peer code
 
 ## How to use

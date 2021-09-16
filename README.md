@@ -24,7 +24,7 @@ As for the limitations of this generated git webhook report for private repos, t
 
 ## Architecture
 
-![image](https://user-images.githubusercontent.com/41193120/133529574-63c5a6a4-4499-4409-9e74-6dee38ac110a.png)
+<a href="https://codeclimate.com/github/ayocodingit/webhook-git-generate-report-telegram-bot/maintainability"><img src="https://api.codeclimate.com/v1/badges/514dde55f8fe82acacc3/maintainability" /></a>
 
 ## Stack Technology
 - NodeJS

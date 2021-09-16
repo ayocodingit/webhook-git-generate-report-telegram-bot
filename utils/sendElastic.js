@@ -3,7 +3,7 @@ import connectQueue from './connectQueue.js'
 const queue = connectQueue('elastic')
 
 const sendBodyIsValid = (payload) => {
-  const participants = payload.participants.trimEnd().split(' ')
+  const participants = payload.participants.trimEnd().split(/[ ,]+/)
   for (const participant of participants) {
     queue.add({
       index: `${process.env.APP_NAME}-${moment().format('YYYY.MM.DD')}`,

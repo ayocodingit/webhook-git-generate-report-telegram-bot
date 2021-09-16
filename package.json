@@ -1,5 +1,5 @@
 {
-  "name": "webhook-git-generate-report",
+  "name": "webhook-git-generate-report-telegram-bot",
   "version": "1.0.0",
   "description": "Webhook Git Generate Report Telegram Bot",
   "main": "server.js",

@@ -1,7 +1,7 @@
 {
-  "name": "github-action",
+  "name": "webhook-git-generate-report",
   "version": "1.0.0",
-  "description": "",
+  "description": "Webhook Git Generate Report Telegram Bot",
   "main": "server.js",
   "dependencies": {
     "@elastic/elasticsearch": "^7.14.1",
@@ -30,10 +30,9 @@
     "dev": "nodemon server.js",
     "job": "node jobProcess.js",
     "job-dev": "nodemon jobProcess.js",
-    "lint": "eslint --fix --ext .js .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint --fix --ext .js ."
   },
   "author": "ayocodingit",
-  "license": "ISC",
+  "license": "MIT",
   "type": "module"
 }

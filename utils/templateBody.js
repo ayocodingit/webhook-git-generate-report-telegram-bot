@@ -17,7 +17,7 @@ const templateBody = async (done, payload) => {
 
   body.addition = payload
   body.url = payload.url
-  return payload
+  return body
 }
 
 const getBodyValid = (body) => {

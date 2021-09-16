@@ -36,8 +36,8 @@ As for the limitations of this generated git webhook report for private repos, t
 ## Quick Start
 Clone project and install dependencies:
 ```bash
-git clone https://github.com/ayocodingit/github-action.git
-cd github-action
+git clone https://github.com/ayocodingit/webhook-git-generate-report-telegram-bot.git
+cd webhook-git-generate-report-telegram-bot
 cp .env.example .env
 ```
 
